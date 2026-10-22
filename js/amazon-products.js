@@ -20,12 +20,12 @@ function sendCentralAdTelemetry(payload) {
     if (navigator.sendBeacon) {
       navigator.sendBeacon(
         CENTRAL_AD_ENGINE,
-        new Blob([body], { type: 'application/json' })
+        new Blob([body], { type: 'text/plain;charset=UTF-8' })
       );
     } else {
       fetch(CENTRAL_AD_ENGINE, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
         body,
         keepalive: true,
       }).catch(() => {});
