@@ -253,7 +253,7 @@
               </button>
               <input
                 class="undo-scrubber"
-                id="undo-scrubber"
+                aria-label="Visual Undo Timeline scrubber" id="undo-scrubber"
                 max="0"
                 min="0"
                 title="Visual Undo Timeline"
@@ -339,6 +339,7 @@
               <div class="upload-formats">
                 JPEG · PNG · TIFF · BMP · GIF · WebP · PDF
               </div>
+              <div style="margin-top: 10px;"><button type="button" class="btn btn-secondary btn-sm" id="btn-sample-scan" style="font-size: 11px; padding: 4px 12px; border-radius: 999px;" onclick="loadDemoScan()">✨ Try Sample Multi-Photo Scan</button></div>
             </div>
             <input
               accept=".jpg,.jpeg,.png,.tif,.tiff,.bmp,.gif,.webp,.pdf,image/*,application/pdf"
@@ -364,7 +365,7 @@
             </div>
             <div class="range-row">
               <input
-                id="bg-threshold-slider"
+                aria-label="Background threshold" id="bg-threshold-slider"
                 max="254"
                 min="150"
                 step="1"
@@ -380,7 +381,7 @@
             </div>
             <div class="range-row">
               <input
-                id="min-area-slider"
+                aria-label="Minimum photo area" id="min-area-slider"
                 max="5"
                 min="0.1"
                 step="0.1"
@@ -1066,14 +1067,14 @@
           <form onsubmit="handleFeedbackSubmit(event)">
             <input
               class="form-control mb-12"
-              id="fb-name"
+              aria-label="Your Name" id="fb-name"
               placeholder="Your Name"
               required=""
               type="text"
             />
             <input
               class="form-control mb-12"
-              id="fb-email"
+              aria-label="Your Email" id="fb-email"
               placeholder="your@email.com"
               required=""
               type="email"
@@ -1156,7 +1157,7 @@
       >
         <input
           class="form-control mb-12"
-          id="fb-name"
+          aria-label="Your Name" id="fb-name"
           placeholder="Your Name"
           required=""
           type="text"
@@ -1164,7 +1165,7 @@
         />
         <input
           class="form-control mb-12"
-          id="fb-email"
+          aria-label="Your Email" id="fb-email"
           placeholder="your@email.com"
           required=""
           type="email"
@@ -1366,6 +1367,44 @@
   });
 </script>
 <!-- MODALS END -->
+
+
+<script>
+async function loadDemoScan() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1600;
+  canvas.height = 1200;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#f5f5f5';
+  ctx.fillRect(0, 0, 1600, 1200);
+
+  // Photo 1 (Summer Holiday)
+  ctx.fillStyle = '#2563eb';
+  ctx.fillRect(120, 100, 600, 440);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillText('Sample 1: Summer Trip (1998)', 160, 320);
+
+  // Photo 2 (Family Gathering)
+  ctx.fillStyle = '#dc2626';
+  ctx.fillRect(860, 120, 600, 440);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('Sample 2: Family Reunion', 900, 340);
+
+  // Photo 3 (Graduation Day)
+  ctx.fillStyle = '#16a34a';
+  ctx.fillRect(360, 660, 880, 440);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('Sample 3: Graduation Day', 420, 880);
+
+  canvas.toBlob((blob) => {
+    const file = new File([blob], 'sample-flatbed-scan.jpg', { type: 'image/jpeg' });
+    if (typeof handleFiles === 'function') {
+      handleFiles([file]);
+    }
+  }, 'image/jpeg', 0.95);
+}
+</script>
 
 </body>
 </html>
