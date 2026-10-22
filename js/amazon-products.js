@@ -1,5 +1,5 @@
 const AMAZON_TAG = 'photoid03-20';
-const CENTRAL_AD_ENGINE = 'https://akilibrain.com/api/amazon-ads';
+const CENTRAL_AD_ENGINE = 'https://tiketichap.com/api/amazon-ads';
 
 function amazonSearch(query) {
   return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${AMAZON_TAG}`;
@@ -19,11 +19,11 @@ function sendCentralAdTelemetry(payload) {
     );
     if (navigator.sendBeacon) {
       navigator.sendBeacon(
-        `${CENTRAL_AD_ENGINE}/event`,
+        CENTRAL_AD_ENGINE,
         new Blob([body], { type: 'application/json' })
       );
     } else {
-      fetch(`${CENTRAL_AD_ENGINE}/event`, {
+      fetch(CENTRAL_AD_ENGINE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body,
@@ -396,7 +396,7 @@ function renderGridWidget() {
 }
 
 function syncDynamicProductsFromCentralEngine() {
-  fetch(`${CENTRAL_AD_ENGINE}/serve?site=photosplitstudio&limit=6`)
+  fetch(`${CENTRAL_AD_ENGINE}?action=serve&site=photosplitstudio&limit=6`)
     .then(r => r.json())
     .then(data => {
       if (!data || !data.allowed || !Array.isArray(data.products) || !data.products.length) return;
