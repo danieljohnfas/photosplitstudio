@@ -1,95 +1,186 @@
 const AMAZON_TAG = 'photoid03-20';
+const CENTRAL_AD_ENGINE = 'https://akilibrain.com/api/amazon-ads';
 
 function amazonSearch(query) {
   return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${AMAZON_TAG}`;
 }
 
-// Photo-digitising gear on Amazon. Each entry is an Amazon search with our tag, so no prices,
-// ratings or product images are copied onto the site (Amazon requires those to be live).
+function sendCentralAdTelemetry(payload) {
+  try {
+    const body = JSON.stringify(
+      Object.assign(
+        {
+          site: 'photosplitstudio',
+          associateTag: AMAZON_TAG,
+          pageUrl: window.location.href,
+        },
+        payload
+      )
+    );
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(
+        `${CENTRAL_AD_ENGINE}/event`,
+        new Blob([body], { type: 'application/json' })
+      );
+    } else {
+      fetch(`${CENTRAL_AD_ENGINE}/event`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        keepalive: true,
+      }).catch(() => {});
+    }
+  } catch (e) {}
+}
+
+// Photo-digitising & Content Creator gear on Amazon (16 curated items so all 5 widget slots are always populated).
 let AMAZON_PRODUCTS = [
   {
-    asin: amazonSearch('Epson FastFoto FF-680W'),
-    title: 'Epson FastFoto FF-680W',
-    desc: 'Feeds a whole stack of prints in one pass. The fastest way to scan a shoebox of photos.',
-    badge: 'Scanner',
+    id: 'ps-active-1',
+    asin: amazonSearch('Epson FastFoto FF-680W wireless high speed photo scanner'),
+    title: 'Epson FastFoto FF-680W High-Speed Scanner',
+    desc: 'Feeds a whole stack of prints at 1 photo/sec. The fastest way to digitize a shoebox of photos.',
+    badge: 'Top Pick',
     icon: '🗂️',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
   },
   {
-    asin: amazonSearch('flatbed photo scanner'),
-    title: 'Flatbed photo scanner',
-    desc: 'Lay several prints on the glass, scan once, then split them here.',
-    badge: 'Scanner',
-    icon: '🖨️',
-    btnClass: "btn-secondary"
-  },
-  {
-    asin: amazonSearch('35mm film negative scanner'),
-    title: '35mm film negative scanner',
-    desc: 'Turn negatives and slides into digital photos.',
-    badge: 'Film',
-    icon: '🎞️',
-    btnClass: "btn-secondary"
-  },
-  {
-    asin: amazonSearch('archival photo storage box acid free'),
-    title: 'Archival photo storage box acid free',
-    desc: 'Keep the originals safe after scanning.',
-    badge: 'Storage',
-    icon: '📦',
-    btnClass: "btn-secondary"
-  },
-  {
-    asin: amazonSearch('portable ssd 1tb'),
-    title: 'Portable ssd 1tb',
-    desc: 'A fast backup drive for your scanned archive.',
+    id: 'ps-active-2',
+    asin: amazonSearch('SanDisk 1TB Extreme Portable SSD USB-C'),
+    title: 'SanDisk 1TB Extreme Portable NVMe SSD',
+    desc: '1050MB/s shockproof USB-C backup drive for your high-res scans, carousels, and 4K Reels.',
     badge: 'Storage',
     icon: '💾',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
   },
   {
-    asin: amazonSearch('wifi digital photo frame'),
-    title: 'Wifi digital photo frame',
-    desc: 'Share the scanned photos with family on a frame.',
+    id: 'ps-active-3',
+    asin: amazonSearch('Canon CanoScan LiDE 400 Slim Flatbed Photo Scanner'),
+    title: 'Canon CanoScan LiDE 400 4800dpi Flatbed',
+    desc: 'Lay 4–6 prints on the glass, scan once at 600 DPI, and auto-split them in PhotoSplit Studio.',
+    badge: 'Scanner',
+    icon: '🖨️',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-4',
+    asin: amazonSearch('Kodak Slide N Scan Film and Slide Digital Scanner'),
+    title: 'KODAK Slide N Scan 35mm Film & Negative Scanner',
+    desc: 'Turn vintage 35mm color & B&W negatives and slides into crisp digital JPEG files.',
+    badge: 'Film',
+    icon: '🎞️',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-5',
+    asin: amazonSearch('ring light with tripod stand for iphone content creator'),
+    title: '12" Creator Ring Light + 62" Phone Tripod',
+    desc: 'Glare-free LED lighting & wireless shutter remote for shooting panoramas and overhead prints.',
+    badge: 'Top Pick',
+    icon: '💡',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-6',
+    asin: amazonSearch('Aura Carver WiFi Digital Picture Frame'),
+    title: 'Aura HD Wi-Fi Digital Photo Frame',
+    desc: 'Instantly display your newly split and restored family photos in any living room.',
     badge: 'Frame',
     icon: '🖼️',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
   },
   {
-    asin: amazonSearch('anti static brush photo cleaning'),
-    title: 'Anti static brush photo cleaning',
-    desc: 'Remove dust before scanning for cleaner results.',
+    id: 'ps-active-7',
+    asin: amazonSearch('archival photo storage box acid free museum quality'),
+    title: 'Acid-Free Archival Photo Storage Box Set',
+    desc: 'Museum-grade acid-free storage boxes with dividers to protect original prints after scanning.',
+    badge: 'Archival',
+    icon: '📦',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-8',
+    asin: amazonSearch('DJI Osmo Mobile 6 smartphone gimbal stabilizer'),
+    title: 'DJI Osmo Mobile 6 3-Axis Phone Gimbal',
+    desc: 'Automated panorama alignment and smooth tracking for seamless Instagram multi-slide carousels.',
+    badge: 'Creator Gear',
+    icon: '📱',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-9',
+    asin: amazonSearch('Hollyland Lark M2 wireless lavalier microphone iphone usb c'),
+    title: 'Hollyland Lark M2 Wireless Creator Mic',
+    desc: 'Studio-grade clip-on wireless microphone for Instagram Reels, TikToks, and family oral histories.',
+    badge: 'Reels Audio',
+    icon: '🎙️',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-10',
+    asin: amazonSearch('Anker USB C SD card reader high speed'),
+    title: 'Anker 2-in-1 USB-C SD / microSD Card Reader',
+    desc: 'Import camera scans and RAW photos straight into your laptop, iPad, or iPhone.',
+    badge: 'Workflow',
+    icon: '🔌',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-11',
+    asin: amazonSearch('Giottos Rocket Air Blaster dust removal camera scanner'),
+    title: 'Rocket Air Blaster & Anti-Static Brush Kit',
+    desc: 'Blow away dust and lint from prints and scanner glass before scanning.',
     badge: 'Scanner care',
     icon: '🧹',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
   },
   {
-    asin: amazonSearch('archival photo album'),
-    title: 'Archival photo album',
-    desc: 'Re-house prints in acid-free pages.',
+    id: 'ps-active-12',
+    asin: amazonSearch('archival photo album acid free slip in pockets'),
+    title: 'Linen Acid-Free 4x6 Archival Photo Album',
+    desc: 'Re-house loose family prints in crystal-clear acid-free PVC-free sleeves.',
     badge: 'Album',
     icon: '📔',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
   },
   {
-    asin: amazonSearch('cotton gloves photo handling'),
-    title: 'Cotton gloves photo handling',
-    desc: 'Handle old prints without leaving fingerprints.',
+    id: 'ps-active-13',
+    asin: amazonSearch('lint free white cotton gloves photo film handling'),
+    title: 'Archival White Cotton Photo & Film Gloves',
+    desc: 'Handle vintage glossy prints and 35mm negatives without leaving oil or fingerprints.',
     badge: 'Handling',
     icon: '🧤',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
   },
   {
-    asin: amazonSearch('microfiber lens cloth scanner glass'),
-    title: 'Microfiber lens cloth scanner glass',
-    desc: 'Keep the scanner glass streak-free.',
+    id: 'ps-active-14',
+    asin: amazonSearch('MagicFiber microfiber lens cleaning cloths scanner glass'),
+    title: 'MagicFiber Optical Microfiber Cleaning Cloths',
+    desc: 'Keep your flatbed scanner glass and camera lens 100% streak-free.',
     badge: 'Scanner care',
     icon: '✨',
-    btnClass: "btn-secondary"
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-15',
+    asin: amazonSearch('Canon SELPHY CP1500 Compact Photo Printer 4x6'),
+    title: 'Canon SELPHY CP1500 Wireless 4x6 Photo Printer',
+    desc: 'Print lab-quality 100-year archival 4x6 postcards and passport sheets at home.',
+    badge: 'Printer',
+    icon: '🖼️',
+    btnClass: 'btn-secondary'
+  },
+  {
+    id: 'ps-active-16',
+    asin: amazonSearch('Ulanzi VL49 RGB LED video light camera smartphone'),
+    title: 'Ulanzi Pocket RGB LED Fill Light',
+    desc: 'Rechargeable magnetic LED light for copy-stand smartphone scanning and creator shoots.',
+    badge: 'Lighting',
+    icon: '🔦',
+    btnClass: 'btn-secondary'
   }
 ];
 
-// Deduplicate by asin just in case
 (function dedupeProducts() {
   const seen = new Set();
   AMAZON_PRODUCTS = AMAZON_PRODUCTS.filter(p => {
@@ -99,23 +190,17 @@ let AMAZON_PRODUCTS = [
   });
 })();
 
-// Enhanced contextual shuffle algorithm
 function getContextualProducts() {
   let products = [...AMAZON_PRODUCTS];
-
-  // URL Context matching
   const url = window.location.href.toLowerCase();
   let boostKeyword = '';
 
   if (url.includes('convert') || url.includes('transcribe')) boostKeyword = 'storage';
-  else if (url.includes('crop') || url.includes('resize') || url.includes('passport')) boostKeyword = 'frame';
+  else if (url.includes('crop') || url.includes('resize') || url.includes('passport')) boostKeyword = 'printer';
+  else if (url.includes('carousel') || url.includes('instagram')) boostKeyword = 'creator';
   else if (url.includes('app')) boostKeyword = 'scanner';
-  else if (url.includes('blog')) boostKeyword = 'storage';
+  else if (url.includes('blog')) boostKeyword = 'archival';
 
-  // Shuffle randomly first
-  products = products.sort(() => 0.5 - Math.random());
-
-  // Boost matching products to the front
   if (boostKeyword) {
     products.sort((a, b) => {
       const aMatch = (a.title + ' ' + a.desc + ' ' + a.badge).toLowerCase().includes(boostKeyword);
@@ -136,15 +221,20 @@ function getAmazonLink(asin) {
   return `https://www.amazon.com/dp/${asin}/?tag=${AMAZON_TAG}`;
 }
 
-// Products carry an emoji icon instead of a copied product photo.
 function productVisual(product, fontSize) {
   return `<span aria-hidden="true" style="font-size:${fontSize}; line-height:1;">${product.icon || '📷'}</span>`;
 }
 
-function trackAdClick(asin, slot) {
+function trackAdClick(asin, slot, productId) {
   if (typeof gtag === 'function') {
     gtag('event', 'ad_click', { event_category: 'AmazonAds', event_label: asin, ad_slot: slot });
   }
+  sendCentralAdTelemetry({
+    type: 'click',
+    slot: slot || 'widget',
+    productId: productId || 'ps-active-1',
+    asin: asin
+  });
   try {
     let clicks = JSON.parse(localStorage.getItem('photosplit_ad_clicks') || '{}');
     if (!clicks[slot]) clicks[slot] = 0;
@@ -157,7 +247,7 @@ function renderSidebarWidgets() {
   const container = document.getElementById('amazon-widget-sidebar');
   if (!container) return;
 
-  const products = AMAZON_PRODUCTS.slice(4, 5); // 1 product
+  const products = AMAZON_PRODUCTS.slice(4, 6); // 2 high-converting sidebar products
   let html = '<div class="ad-sidebar-sticky">';
 
   products.forEach(product => {
@@ -172,12 +262,12 @@ function renderSidebarWidgets() {
       <div style="margin-bottom: 24px; position: relative;">
         <div style="position: absolute; top: -10px; left: 16px; background: ${badgeBg}; color: ${badgeColor}; border: ${badgeBorder}; padding: 4px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; z-index: 10; box-shadow: ${badgeShadow};">${product.badge}</div>
         <div class="glass-ad-panel" style="padding: 24px 16px 16px; border: 1px solid var(--border-strong); border-radius: var(--radius-lg); text-align: center; background: var(--bg-surface); box-shadow: var(--shadow-sm);">
-          <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${product.asin}', 'sidebar')" style="display:block; text-decoration:none; color:inherit; outline:none;">
-            <div style="background: white; border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; display:flex; justify-content:center; align-items:center; min-height:160px;">
-              ${productVisual(product, "4rem")}
+          <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${product.asin}', 'sidebar', '${product.id || ''}')" style="display:block; text-decoration:none; color:inherit; outline:none;">
+            <div style="background: white; border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; display:flex; justify-content:center; align-items:center; min-height:120px;">
+              ${productVisual(product, "3.5rem")}
             </div>
-            <h4 style="font-weight: 800; font-size: 1.05rem; margin: 0 0 8px; color: var(--text-primary);">${product.title}</h4>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 16px; line-height: 1.4;">${product.desc}</p>
+            <h4 style="font-weight: 800; font-size: 1rem; margin: 0 0 8px; color: var(--text-primary);">${product.title}</h4>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 14px; line-height: 1.4;">${product.desc}</p>
             <span class="btn ${product.btnClass}" style="display: flex; justify-content: center; width: 100%; border-radius: 99px; font-weight: 700; padding: 10px;">
               ${btnText}
             </span>
@@ -195,10 +285,10 @@ function renderTopBanner() {
   const container = document.getElementById('amazon-widget-top');
   if (!container) return;
 
-  const products = AMAZON_PRODUCTS.slice(0, 4); // 4 products
+  const products = AMAZON_PRODUCTS.slice(0, 4);
   let html = `
     <div class="ad-container ad-banner-top" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 24px; margin-bottom: 24px; position: relative;">
-      <span style="background:var(--bg-surface-2); border: 1px solid var(--border-strong); color:var(--text-primary); padding: 4px 16px; border-radius: 99px; font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 20px; box-shadow: var(--shadow-sm);">Featured</span>
+      <span style="background:var(--bg-surface-2); border: 1px solid var(--border-strong); color:var(--text-primary); padding: 4px 16px; border-radius: 99px; font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 20px; box-shadow: var(--shadow-sm);">Featured Scanning & Creator Gear (Amazon)</span>
       <div style="display:flex; gap: 24px; align-items:stretch; justify-content:center; flex-wrap:wrap; width: 100%; max-width: 1200px;">
   `;
 
@@ -207,12 +297,12 @@ function renderTopBanner() {
     const btnText = 'Shop on Amazon';
 
     html += `
-      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${product.asin}', 'top')" style="flex: 1; min-width: 250px; display:flex; align-items:center; text-decoration:none; color:inherit; background:var(--bg-surface); padding: 16px; border-radius: var(--radius-lg); border: 1px solid var(--border-strong); gap: 16px; box-shadow: var(--shadow-sm); outline:none; position:relative;">
-        <div style="background: white; border-radius: var(--radius-sm); padding: 8px; flex-shrink: 0; width: 90px; height: 90px; display:flex; justify-content:center; align-items:center;">
-          ${productVisual(product, "2.5rem")}
+      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${product.asin}', 'top', '${product.id || ''}')" style="flex: 1; min-width: 250px; display:flex; align-items:center; text-decoration:none; color:inherit; background:var(--bg-surface); padding: 16px; border-radius: var(--radius-lg); border: 1px solid var(--border-strong); gap: 16px; box-shadow: var(--shadow-sm); outline:none; position:relative;">
+        <div style="background: white; border-radius: var(--radius-sm); padding: 8px; flex-shrink: 0; width: 80px; height: 80px; display:flex; justify-content:center; align-items:center;">
+          ${productVisual(product, "2.4rem")}
         </div>
         <div style="text-align:left; flex: 1;">
-          <h4 style="font-weight:800; font-size: 1rem; margin: 0 0 6px; color: var(--text-primary);">${product.title}</h4>
+          <h4 style="font-weight:800; font-size: 0.98rem; margin: 0 0 6px; color: var(--text-primary);">${product.title}</h4>
           <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 12px; line-height: 1.3;">${product.desc}</p>
           <span class="btn ${product.btnClass} btn-sm" style="font-size:0.75rem; padding:6px 12px; border-radius: 99px; width: fit-content;">${btnText}</span>
         </div>
@@ -231,23 +321,23 @@ function renderBottomBanner() {
   const container = document.getElementById('amazon-widget-bottom');
   if (!container) return;
 
-  const products = AMAZON_PRODUCTS.slice(7, 10); // 3 products
+  const products = AMAZON_PRODUCTS.slice(6, 9);
 
   let html = `
     <div class="ad-container ad-banner-bottom ad-wrap-bottom glass-ad-panel" id="sticky-bottom-banner" style="margin: 0; border-radius: 0; text-align: center; box-shadow: 0 -8px 32px rgba(0,0,0,0.4); background: var(--bg-surface); padding: 16px 0; border-top: 1px solid var(--border-strong); display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 2rem; position: relative;">
-      <span class="ad-label" style="font-size: 0.65rem; position:absolute; top: -20px; background: var(--bg-surface-2); border: 1px solid var(--border-strong); border-bottom: none; color: var(--text-primary); padding: 4px 12px; border-radius: 8px 8px 0 0; right: 24px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">You Might Also Like</span>
+      <span class="ad-label" style="font-size: 0.65rem; position:absolute; top: -20px; background: var(--bg-surface-2); border: 1px solid var(--border-strong); border-bottom: none; color: var(--text-primary); padding: 4px 12px; border-radius: 8px 8px 0 0; right: 24px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Recommended Photo & Creator Gear</span>
   `;
 
   products.forEach(product => {
     const link = getAmazonLink(product.asin);
 
     html += `
-      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${product.asin}', 'bottom')" style="display:flex; align-items:center; text-decoration:none; color:inherit; gap: 16px; background: var(--bg-surface-2); padding: 8px 16px; border-radius: 99px; border: 1px solid var(--border-strong);">
-        <div style="background: white; border-radius: 50%; padding: 4px; width: 48px; height: 48px; display:flex; justify-content:center; align-items:center;">
-          ${productVisual(product, "1.6rem")}
+      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${product.asin}', 'bottom', '${product.id || ''}')" style="display:flex; align-items:center; text-decoration:none; color:inherit; gap: 16px; background: var(--bg-surface-2); padding: 8px 16px; border-radius: 99px; border: 1px solid var(--border-strong);">
+        <div style="background: white; border-radius: 50%; padding: 4px; width: 44px; height: 44px; display:flex; justify-content:center; align-items:center;">
+          ${productVisual(product, "1.5rem")}
         </div>
         <div style="text-align:left;">
-          <p style="font-weight:700; font-size: 0.9em; margin: 0 0 2px;">${product.title}</p>
+          <p style="font-weight:700; font-size: 0.88em; margin: 0 0 2px;">${product.title}</p>
           <p style="font-size: 0.75em; color:var(--text-secondary); margin:0;">${product.badge}</p>
         </div>
         <span class="btn ${product.btnClass} btn-sm" style="font-size:0.75em; padding:4px 12px; border-radius:99px; margin-left: 8px;">View</span>
@@ -265,17 +355,17 @@ function renderBottomBanner() {
 function renderInlineBanner() {
   const container = document.getElementById('amazon-widget-inline');
   if (!container) return;
-  const products = AMAZON_PRODUCTS.slice(10, 12);
+  const products = AMAZON_PRODUCTS.slice(9, 11);
   let html = `<div class="ad-container ad-banner-inline" style="display:flex; flex-wrap:wrap; gap:16px; margin:24px 0;">`;
   products.forEach(p => {
     const link = getAmazonLink(p.asin);
     html += `
-      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${p.asin}', 'inline')" style="flex:1; min-width:250px; display:flex; align-items:center; background:var(--bg-surface); padding:12px; border-radius:var(--radius-lg); border:1px solid var(--border-strong); box-shadow:var(--shadow-sm); text-decoration:none; color:inherit;">
+      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${p.asin}', 'inline', '${p.id || ''}')" style="flex:1; min-width:250px; display:flex; align-items:center; gap:14px; background:var(--bg-surface); padding:14px; border-radius:var(--radius-lg); border:1px solid var(--border-strong); box-shadow:var(--shadow-sm); text-decoration:none; color:inherit;">
         ${productVisual(p, "2.5rem")}
         <div>
-          <h4 style="margin:0 0 4px; font-size:0.9rem; font-weight:800; color:var(--text-primary);">${p.title}</h4>
-          <p style="margin:0 0 6px; font-size:0.78rem; color:var(--text-secondary);">${p.desc}</p>
-          <span class="btn ${p.btnClass} btn-sm" style="font-size:0.7rem; padding:4px 10px;">View</span>
+          <h4 style="margin:0 0 4px; font-size:0.92rem; font-weight:800; color:var(--text-primary);">${p.title}</h4>
+          <p style="margin:0 0 8px; font-size:0.78rem; color:var(--text-secondary);">${p.desc}</p>
+          <span class="btn ${p.btnClass} btn-sm" style="font-size:0.72rem; padding:4px 10px;">Shop on Amazon</span>
         </div>
       </a>
     `;
@@ -287,22 +377,45 @@ function renderInlineBanner() {
 function renderGridWidget() {
   const container = document.getElementById('amazon-widget-grid');
   if (!container) return;
-  const products = AMAZON_PRODUCTS.slice(12, 16);
-  let html = `<div class="ad-container ad-widget-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; margin:24px 0;">`;
+  const products = AMAZON_PRODUCTS.slice(11, 15);
+  let html = `<div class="ad-container ad-widget-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin:24px 0;">`;
   products.forEach(p => {
     const link = getAmazonLink(p.asin);
-    const btnText = p.asin.startsWith('http') ? 'View Details' : 'View on Amazon';
+    const btnText = 'View on Amazon';
     html += `
-      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${p.asin}', 'grid')" style="display:flex; flex-direction:column; align-items:center; background:var(--bg-surface); padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border-strong); box-shadow:var(--shadow-sm); text-decoration:none; color:inherit; text-align:center;">
-        ${productVisual(p, "3rem")}
-        <h4 style="margin:0 0 8px; font-size:0.85rem; font-weight:700; color:var(--text-primary);">${p.title}</h4>
-        <p style="margin:0 0 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.3;">${p.desc}</p>
-        <span class="btn ${p.btnClass} btn-sm" style="font-size:0.75rem; padding:6px 12px;">${btnText}</span>
+      <a href="${link}" target="_blank" rel="sponsored nofollow noopener" onclick="trackAdClick('${p.asin}', 'grid', '${p.id || ''}')" style="display:flex; flex-direction:column; align-items:center; background:var(--bg-surface); padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border-strong); box-shadow:var(--shadow-sm); text-decoration:none; color:inherit; text-align:center;">
+        ${productVisual(p, "2.8rem")}
+        <h4 style="margin:8px 0 6px; font-size:0.88rem; font-weight:700; color:var(--text-primary);">${p.title}</h4>
+        <p style="margin:0 0 10px; font-size:0.76rem; color:var(--text-secondary); line-height:1.35;">${p.desc}</p>
+        <span class="btn ${p.btnClass} btn-sm" style="font-size:0.75rem; padding:6px 12px; margin-top:auto;">${btnText}</span>
       </a>
     `;
   });
   html += `</div>`;
   container.innerHTML = html;
+}
+
+function syncDynamicProductsFromCentralEngine() {
+  fetch(`${CENTRAL_AD_ENGINE}/serve?site=photosplitstudio&limit=6`)
+    .then(r => r.json())
+    .then(data => {
+      if (!data || !data.allowed || !Array.isArray(data.products) || !data.products.length) return;
+      const dynamicItems = data.products.map(p => ({
+        id: p.id,
+        asin: p.localizedUrl || p.productUrl || amazonSearch(p.searchQuery || p.title),
+        title: p.title,
+        desc: p.description,
+        badge: p.badge || 'Top Pick',
+        icon: '✨',
+        btnClass: 'btn-secondary'
+      }));
+      AMAZON_PRODUCTS = [...dynamicItems, ...AMAZON_PRODUCTS];
+      renderSidebarWidgets();
+      renderTopBanner();
+      renderInlineBanner();
+      renderGridWidget();
+    })
+    .catch(() => {});
 }
 
 function setActiveNavLink() {
@@ -318,14 +431,14 @@ function setActiveNavLink() {
 
 document.addEventListener('DOMContentLoaded', () => {
   setActiveNavLink();
+  sendCentralAdTelemetry({ type: 'pageview' });
   renderSidebarWidgets();
   renderTopBanner();
-
-  // Delay sticky bottom banner by 10 seconds to avoid popup friction on load
-  setTimeout(() => {
-    renderBottomBanner();
-  }, 10000);
-
   renderInlineBanner();
   renderGridWidget();
+  syncDynamicProductsFromCentralEngine();
+
+  setTimeout(() => {
+    renderBottomBanner();
+  }, 6000);
 });
