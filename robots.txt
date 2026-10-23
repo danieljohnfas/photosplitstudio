@@ -5,3 +5,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://photosplitstudio.com/sitemap.xml
+
+# AI Agent & LLM Discovery
+# https://photosplitstudio.com/llms.txt

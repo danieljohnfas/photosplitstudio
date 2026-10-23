@@ -1,0 +1,28 @@
+# PhotoSplit Studio — Free Multi-Photo Auto-Cropper & Social Media Resizer
+> https://photosplitstudio.com
+
+PhotoSplit Studio is a 100% free, private, client-side web utility that automatically detects, straightens, crops, and splits multiple printed photos from a single flatbed scan or camera capture in one click. All computer vision and image processing runs entirely inside the visitor's browser using OpenCV.js and the HTML5 Canvas API — no photos are ever uploaded to a server.
+
+## Core Capabilities
+- **Multi-Photo Auto-Split**: Automatically detects individual photos on a scanner bed and crops them into separate high-resolution JPEG, PNG, TIFF, or PDF files.
+- **Auto-Straightening**: Deskews tilted or rotated prints up to ±30 degrees.
+- **Negative to Positive Converter**: Inverts 35mm film negatives (black & white and C-41 color) into positive digital photos.
+- **Instagram Grid & Carousel Maker**: Slices panoramas and square grids (3x1, 3x2, 3x3) for Instagram feed carousels.
+- **Social Media Resizer**: Presets for Instagram Reels, TikTok, YouTube thumbnails, Twitter/X, and LinkedIn.
+- **Passport Photo Maker**: Compliant passport and visa crop templates for US, UK, Schengen, and international formats with 4x6 home print sheets.
+
+## Technical Specifications
+- Processing: Client-side WebAssembly (OpenCV.js), zero server storage.
+- Supported Input Formats: JPEG, PNG, TIFF, BMP, WebP, GIF, PDF.
+- Supported Output Formats: JPEG (with quality slider), PNG (lossless), multi-page PDF, ZIP archive.
+- Offline Capability: Full Progressive Web App (PWA) with service worker offline caching.
+- License & Pricing: 100% Free, no watermark, no sign-up required.
+
+## Key URLs
+- Homepage: https://photosplitstudio.com/
+- Web App: https://photosplitstudio.com/app
+- Image Resizer: https://photosplitstudio.com/resize
+- Image Cropper: https://photosplitstudio.com/crop
+- Passport Maker: https://photosplitstudio.com/passport
+- Image Converter: https://photosplitstudio.com/convert
+- Digitizing Tips & Hardware: https://photosplitstudio.com/tips

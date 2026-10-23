@@ -2423,6 +2423,7 @@ const ExportManager = {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 5000);
+    try { window.dispatchEvent(new CustomEvent("photosplit:downloaded", { detail: { filename } })); } catch (e) {}
   },
 
   getFilename(idx, baseName, format) {
