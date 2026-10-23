@@ -2413,6 +2413,41 @@ const ExportManager = {
     }
   },
 
+  
+  async shareAll() {
+    if (!state.boxes || state.boxes.length === 0) {
+      showToast("No split photos to share. Detect or draw crop regions first.", "warning");
+      return;
+    }
+    const { format, quality, baseName } = this.getSettings();
+    showSpinner(`Preparing ${state.boxes.length} photos to share…`);
+    try {
+      const files = [];
+      for (let i = 0; i < state.boxes.length; i++) {
+        const box = state.boxes[i];
+        const canvas = await renderBoxToCanvas(box, { enhance: DOM.autoEnhanceToggle()?.checked });
+        const blob = await this.canvasToBlob(canvas, format, quality);
+        const fName = this.getFilename(i, baseName, format);
+        files.push(new File([blob], fName, { type: blob.type }));
+      }
+      hideSpinner();
+      if (navigator.canShare && navigator.canShare({ files })) {
+        await navigator.share({
+          files,
+          title: "PhotoSplit Studio Export",
+          text: `Split ${files.length} photos via PhotoSplit Studio.`
+        });
+      } else {
+        showToast("Direct image sharing not supported by browser. Use Download All.", "info");
+      }
+    } catch (err) {
+      hideSpinner();
+      if (err.name !== "AbortError") {
+        showToast("Sharing cancelled or failed.", "warning");
+      }
+    }
+  },
+
   triggerDownload(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -3848,3 +3883,75 @@ window.previewBox = previewBox;
 window.deleteBox = deleteBox;
 window.rotateBox = rotateBox;
 window.selectBox = selectBox;
+
+
+// --- Interactive Mobile Swipe Carousel Simulator ---
+const CarouselSimulator = {
+  async open() {
+    if (!state.boxes || state.boxes.length === 0) {
+      showToast("No split photos available to preview.", "warning");
+      return;
+    }
+
+    showSpinner("Generating carousel preview…");
+    const slides = [];
+    try {
+      for (let i = 0; i < state.boxes.length; i++) {
+        const box = state.boxes[i];
+        const canvas = await renderBoxToCanvas(box, { enhance: DOM.autoEnhanceToggle()?.checked });
+        slides.push(canvas.toDataURL("image/jpeg", 0.85));
+      }
+    } catch (e) {
+      hideSpinner();
+      showToast("Could not generate preview.", "error");
+      return;
+    }
+    hideSpinner();
+
+    const existing = document.getElementById("hv-carousel-modal");
+    if (existing) existing.remove();
+
+    const modal = document.createElement("div");
+    modal.id = "hv-carousel-modal";
+    modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;";
+    
+    let slidesHtml = "";
+    slides.forEach((src, idx) => {
+      slidesHtml += `
+        <div style="flex:0 0 100%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;">
+          <img src="${src}" style="max-height:480px;width:auto;max-width:100%;border-radius:12px;object-fit:contain;box-shadow:0 8px 24px rgba(0,0,0,0.5);" alt="Slide ${idx+1}">
+          <div style="margin-top:10px;font-size:0.8rem;color:#a1a1aa;font-weight:700;">Slide ${idx+1} of ${slides.length}</div>
+        </div>
+      `;
+    });
+
+    modal.innerHTML = `
+      <div style="background:#18181b;border:1px solid #27272a;max-width:440px;width:100%;border-radius:24px;padding:24px;box-shadow:0 25px 50px rgba(0,0,0,0.9);display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:16px;">
+          <div style="font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:6px;">
+            <span>📱</span> Mobile Carousel Simulator
+          </div>
+          <button id="hv-carousel-close" style="background:transparent;border:none;color:#a1a1aa;font-size:1.4rem;cursor:pointer;padding:4px 8px;">✕</button>
+        </div>
+        <p style="font-size:0.82rem;color:#71717a;margin:0 0 16px;text-align:center;">Swipe horizontally to test seamless boundaries across Instagram / TikTok slides.</p>
+        
+        <!-- Phone Frame Viewport -->
+        <div style="width:100%;background:#09090b;border:2px solid #3f3f46;border-radius:18px;padding:16px 8px;overflow:hidden;box-shadow:inset 0 2px 6px rgba(0,0,0,0.8);">
+          <div id="hv-carousel-track" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;gap:12px;padding-bottom:8px;-webkit-overflow-scrolling:touch;">
+            ${slidesHtml}
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;width:100%;margin-top:18px;">
+          <button onclick="ExportManager.saveAll(); document.getElementById('hv-carousel-modal').remove();" style="flex:1;background:var(--accent,#6366f1);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;">
+            ⬇ Download All Slices
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    document.getElementById("hv-carousel-close").addEventListener("click", () => modal.remove());
+  }
+};
+window.CarouselSimulator = CarouselSimulator;

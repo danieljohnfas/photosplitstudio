@@ -10,6 +10,7 @@ const ASSETS_TO_CACHE = [
   '/css/style.css',
   '/js/app.js',
   '/js/worker.js',
+  '/js/amazon-products.js',
   '/js/transcribe.js',
   '/js/whisper-worker.js',
   '/manifest.json',

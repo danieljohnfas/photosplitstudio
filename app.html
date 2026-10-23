@@ -171,7 +171,7 @@
     />
     PhotoSplit Studio
   </a>
-          <div class="header-spacer"></div>
+  <div class="header-spacer"></div>
   <div class="privacy-badge">
     <svg
       fill="none"
@@ -214,6 +214,14 @@
   </button>
   <button aria-label="Show keyboard shortcuts" class="icon-btn" id="btn-shortcuts" title="Keyboard shortcuts"><svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><rect height="12" rx="2" width="20" x="2" y="6"></rect><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"></path></svg></button>
 </header>
+
+
+<!-- TOP AD BANNER -->
+<div id="amazon-widget-top"></div>
+<!-- END TOP AD BANNER -->
+
+
+
         <div id="sidebar-overlay"></div>
         <!-- CANVAS AREA -->
         <section id="canvas-area">
@@ -304,17 +312,12 @@
             <div id="progress-label">Processing…</div>
           </div>
 
+<main class="tool-workspace">
+<!-- IN-TOOL AD -->
 <!-- TOP AD BANNER -->
 <div id="amazon-widget-top"></div>
 <!-- END TOP AD BANNER -->
 
-
-
-<main class="tool-workspace">
-<!-- IN-TOOL AD -->
-<!-- TOP AD BANNER -->
-
-<!-- END TOP AD BANNER -->
 
 <!-- END IN-TOOL AD -->
 <section class="main-section" id="upload-section">
@@ -553,6 +556,24 @@
                 onclick="ExportManager.saveAll()"
               >
                 ⬇ Download All
+              </button>
+              <button
+                class="btn btn-secondary btn-sm"
+                id="btnPreviewCarousel"
+                onclick="CarouselSimulator.open()"
+                title="Preview as seamless mobile swipe carousel"
+                style="display: inline-flex; align-items: center; gap: 4px;"
+              >
+                📱 Swipe Preview
+              </button>
+              <button
+                class="btn btn-secondary btn-sm"
+                id="btnShareAll"
+                onclick="ExportManager.shareAll()"
+                title="Share directly to Photos or Instagram"
+                style="display: inline-flex; align-items: center; gap: 4px;"
+              >
+                📲 Share
               </button>
             </div>
             <div id="splits-strip"></div>
@@ -879,9 +900,13 @@
       </div>
     </article>
 
+﻿
+
+
 <!-- BOTTOM AD BANNER -->
 <div id="amazon-widget-bottom"></div>
 <!-- END BOTTOM AD BANNER -->
+
 
 <footer class="site-footer" style="border-top: 1px solid var(--border-strong); background: linear-gradient(to bottom, var(--bg-surface-2) 0%, var(--bg-surface) 100%); margin-top: 40px;">
   <div class="footer-inner" style="padding-top: 40px;">
@@ -931,6 +956,8 @@
   </script>
   <script src="/js/amazon-products.js?v=4" defer></script>
 </footer>
+
+
 
 
 
@@ -1126,6 +1153,45 @@
 <!-- AD SCRIPTS REMOVED -->
 <!-- AD SCRIPTS REMOVED -->
 
+<script>
+async function loadDemoScan() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1600;
+  canvas.height = 1200;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#f5f5f5';
+  ctx.fillRect(0, 0, 1600, 1200);
+
+  // Photo 1 (Summer Holiday)
+  ctx.fillStyle = '#2563eb';
+  ctx.fillRect(120, 100, 600, 440);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillText('Sample 1: Summer Trip (1998)', 160, 320);
+
+  // Photo 2 (Family Gathering)
+  ctx.fillStyle = '#dc2626';
+  ctx.fillRect(860, 120, 600, 440);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('Sample 2: Family Reunion', 900, 340);
+
+  // Photo 3 (Graduation Day)
+  ctx.fillStyle = '#16a34a';
+  ctx.fillRect(360, 660, 880, 440);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('Sample 3: Graduation Day', 420, 880);
+
+  canvas.toBlob((blob) => {
+    const file = new File([blob], 'sample-flatbed-scan.jpg', { type: 'image/jpeg' });
+    if (typeof handleFiles === 'function') {
+      handleFiles([file]);
+    }
+  }, 'image/jpeg', 0.95);
+}
+</script>
+<!-- AD SCRIPTS REMOVED -->
+
+
 <!-- MODALS START -->
 <div
   class="text-modal-backdrop"
@@ -1157,7 +1223,7 @@
       >
         <input
           class="form-control mb-12"
-          aria-label="Your Name" id="fb-name"
+          id="fb-name"
           placeholder="Your Name"
           required=""
           type="text"
@@ -1165,7 +1231,7 @@
         />
         <input
           class="form-control mb-12"
-          aria-label="Your Email" id="fb-email"
+          id="fb-email"
           placeholder="your@email.com"
           required=""
           type="email"
@@ -1368,43 +1434,6 @@
 </script>
 <!-- MODALS END -->
 
-
-<script>
-async function loadDemoScan() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1600;
-  canvas.height = 1200;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#f5f5f5';
-  ctx.fillRect(0, 0, 1600, 1200);
-
-  // Photo 1 (Summer Holiday)
-  ctx.fillStyle = '#2563eb';
-  ctx.fillRect(120, 100, 600, 440);
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 32px sans-serif';
-  ctx.fillText('Sample 1: Summer Trip (1998)', 160, 320);
-
-  // Photo 2 (Family Gathering)
-  ctx.fillStyle = '#dc2626';
-  ctx.fillRect(860, 120, 600, 440);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText('Sample 2: Family Reunion', 900, 340);
-
-  // Photo 3 (Graduation Day)
-  ctx.fillStyle = '#16a34a';
-  ctx.fillRect(360, 660, 880, 440);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText('Sample 3: Graduation Day', 420, 880);
-
-  canvas.toBlob((blob) => {
-    const file = new File([blob], 'sample-flatbed-scan.jpg', { type: 'image/jpeg' });
-    if (typeof handleFiles === 'function') {
-      handleFiles([file]);
-    }
-  }, 'image/jpeg', 0.95);
-}
-</script>
 
 </body>
 </html>
