@@ -2,7 +2,7 @@ name: Daily Automated Tests
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Run at 06:00 UTC daily
+    - cron: '20 5 * * *' # Run at 05:20 UTC daily (staggered off-peak)
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -25,7 +25,15 @@ jobs:
         working-directory: ./tests
         run: npm ci || npm install
 
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('tests/package-lock.json') }}
+
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         working-directory: ./tests
         run: npx playwright install --with-deps chromium
 
@@ -40,4 +48,8 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add logs/ reports/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save daily test logs and improvement report" && git push)
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git pull --rebase origin main 2>/dev/null || true
+            git commit -m "chore: save daily test logs and improvement report"
+            git push origin main
+          fi
