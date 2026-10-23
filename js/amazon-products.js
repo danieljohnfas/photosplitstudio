@@ -571,6 +571,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGridWidget();
   syncDynamicProductsFromCentralEngine();
 
+  // Delegated click listener capturing any Amazon link across the site (including blog guides and tips)
+  document.addEventListener('click', (e) => {
+    const a = e.target && e.target.closest ? e.target.closest('a[href*="amazon."]') : null;
+    if (!a) return;
+    const asinMatch = (a.href || '').match(/\/dp\/([A-Z0-9]{10})/i);
+    const asin = asinMatch ? asinMatch[1] : (a.getAttribute('data-amz-asin') || '');
+    const slot = a.getAttribute('data-amz-slot') || (a.closest('article, .blog-post, .guide-content') ? 'blog-inline' : 'page-link');
+    const productId = a.getAttribute('data-amz-product-id') || 'ps-active-1';
+
+    trackAdClick(asin, slot, productId);
+  }, true);
+
   setTimeout(() => {
     renderBottomBanner();
   }, 6000);
