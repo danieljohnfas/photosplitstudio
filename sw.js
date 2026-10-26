@@ -8,6 +8,7 @@ const ASSETS_TO_CACHE = [
   '/passport',
   '/transcribe',
   '/css/style.css',
+  '/js/yolo26-depth.js',
   '/js/app.js',
   '/js/worker.js',
   '/js/amazon-products.js',
