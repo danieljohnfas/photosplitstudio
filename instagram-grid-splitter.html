@@ -1,0 +1,294 @@
+<!doctype html>
+<html data-theme="" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <meta content="#010101" name="theme-color" />
+    <title>Instagram Grid Splitter — Split Photo into 3, 6 or 9 Squares Online Free | PhotoSplit Studio</title>
+    <meta
+      content="Split panoramic images and photos into 3x1 swipeable carousels, 3x2 grids, or 3x3 square tiles for Instagram feeds. 100% free, private browser-based tool with zero upload required."
+      name="description"
+    />
+    <meta
+      content="instagram grid splitter, split photo into 3 for instagram, split image into 9 squares, instagram panorama splitter, instagram carousel splitter online, 3x1 photo splitter, 3x3 grid maker free, photo slicer for instagram"
+      name="keywords"
+    />
+    <meta content="index,follow,max-snippet:-1,max-image-preview:large" name="robots" />
+    <link href="https://photosplitstudio.com/instagram-grid-splitter" rel="canonical" />
+    
+    <!-- Open Graph -->
+    <meta content="website" property="og:type" />
+    <meta content="Instagram Grid Splitter — Split Photo into 3, 6 or 9 Squares Free" property="og:title" />
+    <meta content="Slice your panoramas into seamless 3x1 Instagram carousel slides or 3x3 giant profile grids. Free, browser-based, instant download." property="og:description" />
+    <meta content="https://photosplitstudio.com/instagram-grid-splitter" property="og:url" />
+    <meta content="https://photosplitstudio.com/assets/images/og-image.png" property="og:image" />
+    <meta content="summary_large_image" name="twitter:card" />
+    
+    <link href="/assets/images/logo.png" rel="icon" type="image/png" />
+    <link href="/css/style.css" rel="stylesheet" />
+    
+    <!-- JSON-LD Structured Data: WebApplication + HowTo + FAQPage -->
+    <script type="application/ld+json">
+      [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Instagram Grid Splitter — PhotoSplit Studio",
+          "url": "https://photosplitstudio.com/instagram-grid-splitter",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "All",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "description": "Free tool to split photos and panoramas into seamless Instagram carousel slides and profile grid squares directly in your browser."
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "How to Split a Photo for Instagram Grids and Carousels",
+          "description": "Step-by-step instructions for slicing any photo into seamless Instagram grid tiles or carousel slides.",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Upload your photo",
+              "text": "Select or drag-and-drop any landscape photo, panorama, or portrait into the splitter."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Choose your grid layout",
+              "text": "Pick 3x1 for seamless swipeable carousels, 3x2 for a banner grid, or 3x3 for a 9-square profile showcase."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Export and post to Instagram",
+              "text": "Download the sliced tiles in numbered order and upload them to Instagram."
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I split a panorama into 3 swipeable slides for Instagram?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Upload your panoramic image, select the '3x1 Carousel' mode, and click 'Split & Download'. The tool will slice the image into three equal sequential parts that connect seamlessly when swiped on Instagram."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are my photos uploaded to a cloud server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. All slicing is performed 100% locally on your device using HTML5 Canvas. Your photos never leave your computer or phone."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the best format for Instagram grid posts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "High-quality JPEG or PNG at 1080px width per tile ensures maximum sharpness without Instagram recompression artifacts."
+              }
+            }
+          ]
+        }
+      ]
+    </script>
+    <style>
+      .tool-wrap { max-width: 1000px; margin: 0 auto; padding: 32px 16px; }
+      .upload-box { border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: border-color .2s; background: rgba(255,255,255,0.02); }
+      .upload-box:hover { border-color: #10b981; }
+      .btn-grid { padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+      .btn-grid.active { background: #10b981; color: #000; border-color: #10b981; }
+      .tiles-preview { display: grid; gap: 8px; margin: 24px 0; max-width: 600px; margin-left: auto; margin-right: auto; }
+      .tile-item { position: relative; border-radius: 6px; overflow: hidden; background: #111; aspect-ratio: 1; border: 1px solid rgba(255,255,255,0.1); }
+      .tile-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .tile-num { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.75); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <header id="site-header" style="padding:16px 24px; border-bottom:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+      <a href="/" style="display:flex; align-items:center; gap:10px; color:#fff; text-decoration:none; font-weight:700; font-size:1.15rem;">
+        <img src="/assets/images/logo.png" alt="PhotoSplit Studio" width="28" height="28" />
+        PhotoSplit Studio
+      </a>
+      <nav style="display:flex; gap:16px;">
+        <a href="/" style="color:#aaa; text-decoration:none; font-size:0.9rem;">Scanner Splitter</a>
+        <a href="/crop" style="color:#aaa; text-decoration:none; font-size:0.9rem;">Cropper</a>
+        <a href="/resize" style="color:#aaa; text-decoration:none; font-size:0.9rem;">Resizer</a>
+        <a href="/instagram-grid-splitter" style="color:#10b981; text-decoration:none; font-size:0.9rem; font-weight:600;">Instagram Splitter</a>
+      </nav>
+    </header>
+
+    <main class="tool-wrap">
+      <div style="text-align:center; margin-bottom:32px;">
+        <h1 style="font-size:2.2rem; margin:0 0 12px; font-weight:800;">Instagram Grid &amp; Carousel Splitter</h1>
+        <p style="color:#aaa; font-size:1.05rem; max-width:680px; margin:0 auto;">
+          Split photos into seamless <strong>3x1 panoramic carousels</strong>, <strong>3x2 feed banners</strong>, or <strong>3x3 giant profile grids</strong> for Instagram. 100% free, private, and instant.
+        </p>
+      </div>
+
+      <!-- Tool Workspace -->
+      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:24px; margin-bottom:40px;">
+        <div id="drop-area" class="upload-box" onclick="document.getElementById('file-input').click()">
+          <input type="file" id="file-input" accept="image/*" style="display:none;" />
+          <div style="font-size:2rem; margin-bottom:8px;">📸</div>
+          <p style="margin:0 0 6px; font-weight:700; font-size:1.1rem;">Click to upload or drag &amp; drop an image</p>
+          <p style="margin:0; font-size:0.85rem; color:#888;">Supports JPEG, PNG, WebP, HEIC &bull; Processed privately in your browser</p>
+        </div>
+
+        <div id="controls-section" style="display:none; margin-top:24px;">
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+            <button type="button" class="btn-grid active" data-cols="3" data-rows="1">3x1 (Swipe Carousel)</button>
+            <button type="button" class="btn-grid" data-cols="3" data-rows="2">3x2 (6 Grid Banner)</button>
+            <button type="button" class="btn-grid" data-cols="3" data-rows="3">3x3 (9 Square Profile)</button>
+            <button type="button" class="btn-grid" data-cols="2" data-rows="1">2x1 (Dual Slide)</button>
+          </div>
+
+          <div id="preview-grid" class="tiles-preview" style="grid-template-columns: repeat(3, 1fr);"></div>
+
+          <div style="text-align:center; margin-top:24px;">
+            <button id="download-all-btn" style="background:#10b981; color:#000; font-weight:800; font-size:1rem; padding:12px 28px; border-radius:10px; border:none; cursor:pointer;">
+              ⬇️ Download Slices (Numbered)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO Editorial & Guide Section -->
+      <article style="border-top:1px solid rgba(255,255,255,0.08); padding-top:40px; color:#ccc; line-height:1.7;">
+        <h2 style="color:#fff; font-size:1.6rem; margin-bottom:16px;">How to Create Seamless Instagram Swipe Carousels</h2>
+        <p>
+          Panoramic images look stunning on modern smartphones, but Instagram’s standard feed formats compress wide landscapes into tiny letterboxed strips. By slicing your panoramic photograph into three equal sequential square or 4:5 vertical images using a <strong>3x1 grid splitter</strong>, viewers can swipe seamlessly through your photo as if it were a single continuous canvas.
+        </p>
+
+        <h3 style="color:#fff; font-size:1.3rem; margin:24px 0 12px;">Top Instagram Grid Layout Options</h3>
+        <ul style="padding-left:20px; space-y-2;">
+          <li><strong>3x1 Carousel Panorama:</strong> Ideal for breathtaking landscape shots and wide horizon travel photography.</li>
+          <li><strong>3x2 Six-Photo Banner:</strong> Gives your Instagram profile page a wide headline banner that immediately grabs profile visitors' attention.</li>
+          <li><strong>3x3 Nine-Square Giant Grid:</strong> Turns your entire profile grid view into a single massive, high-impact photo puzzle.</li>
+        </ul>
+
+        <h3 style="color:#fff; font-size:1.3rem; margin:24px 0 12px;">Frequently Asked Questions</h3>
+        <div style="display:flex; flex-direction:column; gap:16px; margin-top:12px;">
+          <div style="background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+            <h4 style="margin:0 0 6px; color:#fff;">What order should I post the 3x3 tiles to Instagram?</h4>
+            <p style="margin:0; font-size:0.95rem; color:#aaa;">Post in reverse numbered order (start with Tile #9 first, ending with Tile #1). Because Instagram pushes older posts down, Tile #1 will end up in the top-left position of your profile grid.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+            <h4 style="margin:0 0 6px; color:#fff;">Will this reduce my photo quality?</h4>
+            <p style="margin:0; font-size:0.95rem; color:#aaa;">No. PhotoSplit Studio exports each tile at full native resolution with zero compression loss, guaranteeing crisp lines on Retina screens.</p>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <footer style="text-align:center; padding:32px 16px; border-top:1px solid rgba(255,255,255,0.08); font-size:0.85rem; color:#666;">
+      &copy; 2026 PhotoSplit Studio &bull; <a href="/privacy-policy" style="color:#888;">Privacy</a> &bull; <a href="/terms" style="color:#888;">Terms</a> &bull; <a href="/separate-scanned-photos" style="color:#888;">Separate Scanned Photos</a>
+    </footer>
+
+    <script>
+      let currentImage = null;
+      let cols = 3;
+      let rows = 1;
+      let sliceBlobs = [];
+
+      const fileInput = document.getElementById('file-input');
+      const dropArea = document.getElementById('drop-area');
+      const controls = document.getElementById('controls-section');
+      const preview = document.getElementById('preview-grid');
+      const downloadBtn = document.getElementById('download-all-btn');
+      const gridBtns = document.querySelectorAll('.btn-grid');
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+      });
+
+      dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.borderColor = '#10b981'; });
+      dropArea.addEventListener('dragleave', () => { dropArea.style.borderColor = 'rgba(255,255,255,0.2)'; });
+      dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.style.borderColor = 'rgba(255,255,255,0.2)';
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+      });
+
+      function handleFile(file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            currentImage = img;
+            controls.style.display = 'block';
+            renderSlices();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      gridBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          gridBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          cols = parseInt(btn.dataset.cols, 10);
+          rows = parseInt(btn.dataset.rows, 10);
+          preview.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+          renderSlices();
+        });
+      });
+
+      function renderSlices() {
+        if (!currentImage) return;
+        preview.innerHTML = '';
+        sliceBlobs = [];
+
+        const sliceW = Math.floor(currentImage.width / cols);
+        const sliceH = Math.floor(currentImage.height / rows);
+
+        let count = 1;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const canvas = document.createElement('canvas');
+            canvas.width = sliceW;
+            canvas.height = sliceH;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(currentImage, c * sliceW, r * sliceH, sliceW, sliceH, 0, 0, sliceW, sliceH);
+
+            const item = document.createElement('div');
+            item.className = 'tile-item';
+            const img = document.createElement('img');
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+            img.src = dataUrl;
+            item.appendChild(img);
+
+            const badge = document.createElement('div');
+            badge.className = 'tile-num';
+            badge.textContent = `#${count}`;
+            item.appendChild(badge);
+
+            preview.appendChild(item);
+            sliceBlobs.push({ name: `instagram-slice-${count}.jpg`, dataUrl });
+            count++;
+          }
+        }
+      }
+
+      downloadBtn.addEventListener('click', () => {
+        sliceBlobs.forEach((s, idx) => {
+          setTimeout(() => {
+            const a = document.createElement('a');
+            a.href = s.dataUrl;
+            a.download = s.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }, idx * 250);
+        });
+      });
+    </script>
+  </body>
+</html>
