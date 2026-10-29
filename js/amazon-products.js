@@ -47,25 +47,25 @@ let AMAZON_PRODUCTS = [
     asin: 'B07DLFRV6W',
     title: 'Epson FastFoto FF-680W High-Speed Photo Scanner',
     desc: 'Feeds a stack of prints at 1 photo/sec. The gold standard for digitizing shoeboxes of family prints.',
-    badge: 'Top Pick',
+    badge: 'Top Pick Scanner',
     rating: 4.5,
     reviews: '3,800+',
     price: '$599.99',
     prime: true,
-    icon: '🗂️',
+    icon: '📸',
     btnClass: 'btn-secondary'
   },
   {
     id: 'ps-active-2',
-    asin: 'B08GTYFC37',
-    title: 'SanDisk 1TB Extreme Portable NVMe SSD USB-C',
-    desc: '1050MB/s rugged shockproof storage for high-res photo archives, carousels, and 4K video.',
-    badge: 'Fast Storage',
-    rating: 4.6,
-    reviews: '68,000+',
-    price: '$109.99',
+    asin: 'B01LWUX8CW',
+    title: 'Plustek ePhoto Z300 Photo and Document Scanner',
+    desc: 'Gentle motorized roller feed for fragile vintage prints and photo albums without scratching.',
+    badge: 'Archival Pick',
+    rating: 4.5,
+    reviews: '4,200+',
+    price: '$199.99',
     prime: true,
-    icon: '💾',
+    icon: '🎞️',
     btnClass: 'btn-secondary'
   },
   {
@@ -73,7 +73,7 @@ let AMAZON_PRODUCTS = [
     asin: 'B07G5X1N1H',
     title: 'Canon CanoScan LiDE 400 4800dpi Flatbed Scanner',
     desc: 'Lay 4–6 photos on the glass, scan once at 600 DPI, and auto-split them in PhotoSplit Studio.',
-    badge: 'Best Value',
+    badge: 'Best Value Scanner',
     rating: 4.4,
     reviews: '7,400+',
     price: '$89.99',
@@ -83,15 +83,15 @@ let AMAZON_PRODUCTS = [
   },
   {
     id: 'ps-active-4',
-    asin: 'B084B3G59J',
-    title: 'KODAK Slide N Scan Film & 35mm Slide Scanner',
-    desc: 'Easily view and convert 35mm, 110, and 126 color and B&W negatives into digital JPEGs.',
-    badge: 'Film Scanner',
-    rating: 4.3,
-    reviews: '11,200+',
-    price: '$179.99',
+    asin: 'B002OEBMRU',
+    title: 'Epson Perfection V600 Color Photo & Film Scanner',
+    desc: '6400 x 9600 dpi resolution with DIGITAL ICE technology for removing dust and scratches from old prints.',
+    badge: 'Pro Restoration',
+    rating: 4.5,
+    reviews: '5,900+',
+    price: '$349.99',
     prime: true,
-    icon: '🎞️',
+    icon: '🔍',
     btnClass: 'btn-secondary'
   },
   {
@@ -367,8 +367,8 @@ function renderTopBanner() {
 
   const products = AMAZON_PRODUCTS.slice(0, 4);
   let html = `
-    <div class="ad-container ad-banner-top" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 24px; margin-bottom: 24px; position: relative;">
-      <span style="background:var(--bg-surface-2); border: 1px solid var(--border-strong); color:var(--text-primary); padding: 4px 16px; border-radius: 99px; font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 20px; box-shadow: var(--shadow-sm);">Featured Scanning & Creator Gear (Amazon)</span>
+    <div data-nosnippet="true" class="ad-container ad-banner-top" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 24px; margin-bottom: 24px; position: relative;">
+      <span style="background:var(--bg-surface-2); border: 1px solid var(--border-strong); color:var(--text-primary); padding: 4px 16px; border-radius: 99px; font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 20px; box-shadow: var(--shadow-sm);">Featured Archival Scanning Gear (Amazon)</span>
       <div style="display:flex; gap: 20px; align-items:stretch; justify-content:center; flex-wrap:wrap; width: 100%; max-width: 1200px;">
   `;
 
