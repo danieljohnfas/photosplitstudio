@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 
 <html data-theme="" lang="en">
   <head>
@@ -46,6 +46,35 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="/css/style.css" rel="stylesheet" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "PhotoSplit Studio Private Whisper AI Audio to Text Transcriber",
+            "url": "https://photosplitstudio.com/transcribe",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "All",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "description": "Free browser-based Whisper AI audio to text transcriber and meeting notes generator for MP3, WAV, M4A, and live microphone recordings."
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How can I transcribe MP3, WAV, or M4A audio to text for free without uploading confidential recordings?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Drop your MP3, WAV, MP4, or M4A recording into PhotoSplit Studio's Transcribe tool. It runs OpenAI Whisper directly inside your browser via WebAssembly/WebGPU, producing timestamped transcripts and structured Markdown or Word meeting reports with zero server uploads."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
